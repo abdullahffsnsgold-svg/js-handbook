@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS Handbook Pro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dark-theme">
+
+  <div class="bg-effects">
+    <span class="orb yellow"></span>
+    <span class="orb purple"></span>
+  </div>
+
+  <div id="sidebar-overlay" class="sidebar-overlay hidden"></div>
+
+  <div class="app-layout">
+    <button id="menu-trigger" class="mobile-menu-btn" aria-label="Открыть меню">☰</button>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">JS<span>.book</span></div>
+      <nav id="nav-list" class="nav-links"></nav>
+    </aside>
+
+    <main class="viewport">
+      <header class="navbar">
+        <div class="search-container">
+          <input id="smart-search" placeholder="Поиск..." autocomplete="off" />
+          <span id="search-hint">Категории</span>
+        </div>
+        <button id="add-btn" class="theme-btn" style="color: var(--accent); font-weight: 800;">+</button>
+        <button id="theme-toggle" class="theme-btn">🌓</button>
+      </header>
+
+      <section class="scroll-area">
+        <div class="content-header">
+          <h1 id="view-title">Добро пожаловать</h1>
+          <button id="back-btn" class="hidden back-btn">← Назад</button>
+        </div>
+        <div id="grid" class="cards-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal" class="overlay hidden">
+    <div class="modal-glass">
+      <button id="close-modal" class="close-btn">×</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
