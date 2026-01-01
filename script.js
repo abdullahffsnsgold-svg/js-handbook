@@ -2,7 +2,7 @@ function method(name, text, args, returns, example) {
   return { name, text, args, returns, example };
 }
 
-// Твои ПОЛНЫЕ "вшитые" данные, которые теперь в коде навсегда
+
 const BASE_TOPICS = {
   "Циклы": {
     "description": "Повторное выполнение кода.",
@@ -122,15 +122,15 @@ const BASE_TOPICS = {
   }
 };
 
-// --- ЛОГИКА СЛИЯНИЯ И ЗАЩИТЫ ---
+
 const userStorage = JSON.parse(localStorage.getItem("topics")) || {};
-// Склеиваем твои вшитые темы с теми, что добавит пользователь
+
 const topics = { ...BASE_TOPICS, ...userStorage };
 
 function save() {
   const customData = {};
   Object.keys(topics).forEach(key => {
-    // Сохраняем только те темы, которых НЕТ в базе, чтобы не дублировать
+    
     if (!BASE_TOPICS[key]) {
       customData[key] = topics[key];
     }
@@ -160,18 +160,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("sidebar-overlay");
   const menuBtn = document.getElementById("menu-trigger");
-  // Логика добавления новой темы
-  // Функция для сохранения в LocalStorage
+
+
+
   function save() {
     localStorage.setItem("topics", JSON.stringify(topics));
   }
 
-  // Открытие формы добавления
+
   document.getElementById("add-btn").onclick = () => {
     const modalContent = document.getElementById("modal-content");
 
     if (!active) {
-      // ФОРМА ДЛЯ НОВОЙ ТЕМЫ
+      
       modalContent.innerHTML = `
             <h2 style="margin-bottom: 20px;">Новая категория</h2>
             <input id="new-topic-name" class="form-input" placeholder="Название темы (например, Массивы)">
@@ -188,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       };
     } else {
-      // ФОРМА ДЛЯ НОВОГО МЕТОДА
+    
       modalContent.innerHTML = `
             <h2 style="margin-bottom: 20px;">Добавить в "${active}"</h2>
             <input id="m-name" class="form-input" placeholder="Название (например, map)">
@@ -224,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!active) {
       hint.textContent = "Категории";
       backBtn.classList.add("hidden");
-      initNav(); // Обновляем сайдбар
+      initNav(); 
       Object.keys(topics).forEach(t => {
         if (t.toLowerCase().includes(filter.toLowerCase())) {
           createCard(t, () => select(t));
@@ -241,23 +242,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Обновленная функция создания карточки
+
   function createCard(text, cb) {
     const c = document.createElement("div");
     c.className = "card";
 
-    // Текст карточки
+    
     const span = document.createElement("span");
     span.textContent = text;
     c.appendChild(span);
 
-    // Добавляем кнопку удаления, если мы на главной (удаляем темы)
+    
     if (!active) {
       const delBtn = document.createElement("button");
       delBtn.className = "delete-btn";
       delBtn.innerHTML = "×";
       delBtn.onclick = (e) => {
-        e.stopPropagation(); // Чтобы не сработал клик по самой карточке
+        e.stopPropagation(); 
         deleteTopic(text);
       };
       c.appendChild(delBtn);
@@ -267,16 +268,16 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.appendChild(c);
   }
 
-  // Функция удаления темы
+
   function deleteTopic(topicName) {
     if (confirm(`Вы уверены, что хотите удалить тему "${topicName}"?`)) {
-      // Удаляем из объекта topics
+    
       delete topics[topicName];
 
-      // Сохраняем обновленный объект в localStorage
+     
       localStorage.setItem("topics", JSON.stringify(topics));
 
-      // Перерисовываем интерфейс
+      
       render();
     }
   }
@@ -319,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("modal").classList.remove("hidden");
   }
 
-  // Управление сайдбаром
+  
   function openSidebar() {
     sidebar.classList.add("open");
     overlay.classList.remove("hidden");
@@ -352,3 +353,4 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 console.log(localStorage);
+
