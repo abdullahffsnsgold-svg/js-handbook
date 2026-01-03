@@ -2,7 +2,6 @@ function method(name, text, args, returns, example) {
   return { name, text, args, returns, example };
 }
 
-// Твои ПОЛНЫЕ "вшитые" данные, которые теперь в коде навсегда
 const BASE_TOPICS = {
   "Циклы": {
     "description": "Повторное выполнение кода.",
@@ -325,15 +324,15 @@ const BASE_TOPICS = {
   }
 };
 
-// --- ЛОГИКА СЛИЯНИЯ И ЗАЩИТЫ ---
+
 const userStorage = JSON.parse(localStorage.getItem("topics")) || {};
-// Склеиваем твои вшитые темы с теми, что добавит пользователь
+
 const topics = { ...BASE_TOPICS, ...userStorage };
 
 function save() {
   const customData = {};
   Object.keys(topics).forEach(key => {
-    // Сохраняем только те темы, которых НЕТ в базе, чтобы не дублировать
+
     if (!BASE_TOPICS[key]) {
       customData[key] = topics[key];
     }
@@ -341,7 +340,7 @@ function save() {
   localStorage.setItem("topics", JSON.stringify(customData));
 }
 
-// В функции удаления (внутри render или deleteTopic) используй это:
+
 function deleteTopic(topicName) {
   if (BASE_TOPICS[topicName]) {
     alert("Эту системную категорию нельзя удалить!");
@@ -363,13 +362,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("sidebar-overlay");
   const menuBtn = document.getElementById("menu-trigger");
-  // Логика добавления новой темы
-  // Функция для сохранения в LocalStorage
+
   function save() {
     localStorage.setItem("topics", JSON.stringify(topics));
   }
 
-  // Открытие формы добавления
+
   document.getElementById("add-btn").onclick = () => {
     const modalContent = document.getElementById("modal-content");
 
@@ -454,13 +452,12 @@ document.addEventListener("DOMContentLoaded", () => {
     span.textContent = text;
     c.appendChild(span);
 
-    // Добавляем кнопку удаления, если мы на главной (удаляем темы)
     if (!active) {
       const delBtn = document.createElement("button");
       delBtn.className = "delete-btn";
       delBtn.innerHTML = "×";
       delBtn.onclick = (e) => {
-        e.stopPropagation(); // Чтобы не сработал клик по самой карточке
+        e.stopPropagation();
         deleteTopic(text);
       };
       c.appendChild(delBtn);
@@ -470,16 +467,14 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.appendChild(c);
   }
 
-  // Функция удаления темы
   function deleteTopic(topicName) {
     if (confirm(`Вы уверены, что хотите удалить тему "${topicName}"?`)) {
-      // Удаляем из объекта topics
+
       delete topics[topicName];
 
-      // Сохраняем обновленный объект в localStorage
       localStorage.setItem("topics", JSON.stringify(topics));
 
-      // Перерисовываем интерфейс
+
       render();
     }
   }
@@ -522,7 +517,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("modal").classList.remove("hidden");
   }
 
-  // Управление сайдбаром
   function openSidebar() {
     sidebar.classList.add("open");
     overlay.classList.remove("hidden");
@@ -554,7 +548,7 @@ document.addEventListener("DOMContentLoaded", () => {
   render();
 });
 
-// Объект управления тестом
+
 const QuizEngine = {
   config: {
     totalQuestions: 0,
@@ -564,30 +558,29 @@ const QuizEngine = {
     wrongCategories: new Set()
   },
 
-  // 1. Запуск теста
   start(amount) {
-    // Собираем базу из BASE_TOPICS
+
     const pool = [];
     Object.keys(BASE_TOPICS).forEach(cat => {
       BASE_TOPICS[cat].methods.forEach(m => pool.push({ ...m, category: cat }));
     });
 
-    // Перемешиваем и нарезаем
+    
     this.config.questions = pool.sort(() => Math.random() - 0.5);
     if (amount > 0) this.config.questions = this.config.questions.slice(0, amount);
 
-    // Сброс состояния
+
     this.config.totalQuestions = this.config.questions.length;
     this.config.currentIndex = 0;
     this.config.correctAnswers = 0;
     this.config.wrongCategories.clear();
 
-    // Переключение экранов
+
     this.switchScreen('game');
     this.nextQuestion();
   },
 
-  // 2. Отображение вопроса
+
   nextQuestion() {
     if (this.config.currentIndex >= this.config.totalQuestions) {
       this.finish();
@@ -603,7 +596,7 @@ const QuizEngine = {
     document.getElementById('quiz-feedback').innerText = "";
     optionsContainer.innerHTML = "";
 
-    // Генерируем варианты (1 верный + 3 случайных)
+
     const variants = this.generateVariants(data.text);
 
     variants.forEach(text => {
@@ -615,7 +608,6 @@ const QuizEngine = {
     });
   },
 
-  // 3. Обработка клика
   handleAnswer(selectedText, correctData, clickedBtn) {
     const btns = document.querySelectorAll('.option-btn');
     btns.forEach(b => b.style.pointerEvents = 'none'); // Блокировка
@@ -636,7 +628,7 @@ const QuizEngine = {
     setTimeout(() => this.nextQuestion(), 1500);
   },
 
-  // 4. Финиш
+
   finish() {
     this.switchScreen('result');
     const scorePercent = Math.round((this.config.correctAnswers / this.config.totalQuestions) * 100);
@@ -652,7 +644,7 @@ const QuizEngine = {
     document.getElementById('advice-box').innerHTML = advice;
   },
 
-  // Вспомогательные функции
+ 
   switchScreen(type) {
     document.getElementById('quiz-start-screen').classList.toggle('hidden', type !== 'start');
     document.getElementById('quiz-game-screen').classList.toggle('hidden', type !== 'game');
@@ -669,7 +661,7 @@ const QuizEngine = {
   }
 };
 
-// Привязка к интерфейсу
+
 function startQuiz(n) { QuizEngine.start(n); }
 function resetQuiz() { QuizEngine.switchScreen('start'); }
 
@@ -680,4 +672,5 @@ document.getElementById('start-quiz-btn').onclick = () => {
 
 document.getElementById('close-quiz').onclick = () => {
   document.getElementById('quiz-container').classList.add('quiz-hidden');
+
 };
